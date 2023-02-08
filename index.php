@@ -1,4 +1,7 @@
 <?
+error_reporting(0);
+include('../lib/tools/Program.class.php');
+
 function unhex($match) {
 	return pack('H2', substr($match[0], 2));
 }
@@ -17,10 +20,17 @@ if (isset($_GET['t'])) {
 	$_POST['q'] = $_GET['t'];
 }
 
-if (is_uploaded_file($_FILES['file']['tmp_name']) and $file = @file_get_contents($_FILES['file']['tmp_name']) and substr($file, 0, 11) == "**TI83F*\x1a\x0a\x00") {
-	$_SERVER['REQUEST_URI'] = '/homer/%' . implode('%', str_split(strtoupper(bin2hex(substr($file, 74, $length = ord($file[73]) * 256 + ord($file[72])))), 2)) . '.gif';
+if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+	$variables = \ClrHome\Program::fromFile($_FILES['file']['tmp_name'], 1);
+
+	if (count($variables) === 1 && (
+		$variables[0]->getType() === \ClrHome\VariableType::PROGRAM ||
+				$variables[0]->getType() === \ClrHome\VariableType::PROGRAM_LOCKED
+	)) {
+		$_SERVER['REQUEST_URI'] = '/homer/%' . implode('%', str_split(strtoupper(bin2hex(':' . str_replace("\xd6", "\xd6:", $variables[0]->getBodyAsTiChars()))), 2)) . '.gif';
+	}
 } elseif (isset($_POST['q'])) {
-	header('Location: ' . str_replace('%2F', '/', rawurlencode(preg_replace_callback("#\\\\x[\xa-fA-F]{2}#", 'unhex', preg_replace('#\r\n?|\n#', "\xd6", utf8_decode(str_replace($utf8, $ascii, stripslashes($_POST['q'])))))) . '.gif'));
+	header('Location: ' . str_replace('%2F', '/', rawurlencode(preg_replace_callback("#\\\\x[\da-fA-F]{2}#", 'unhex', preg_replace('#\r\n?|\n#', "\xd6", utf8_decode(str_replace($utf8, $ascii, stripslashes($_POST['q'])))))) . '.gif'));
 	die();
 }
 
@@ -32,30 +42,30 @@ if (preg_match('#^/homer/(.*)\.(gif|jpg|png)$#', $_SERVER['REQUEST_URI'], $match
 	} else {
 		$lines = explode("\xd6", urldecode($match[1]));
 		$height = count($lines);
-		
+
 		foreach ($lines as $line)
 			$height += (int)((strlen(str_replace(chr(0xff), '', $line)) - 1) / 16);
-		
+
 		$bg = imagecolorallocate($image = imagecreate(192, max($height * 16, 128)), 0x9e, 0xab, 0x88);
 		$fg = imagecolorallocate($image, 0x1a, 0x1c, 0x16);
 		$y = $l = 0;
-		
+
 		foreach ($lines as $line) {
 			$y++;
 			$x = 0;
-			
+
 			for ($j = 0; $j < strlen($line); $j++) {
 				$k = $line[$j];
-				
+
 				if ($k == chr(0xff)) {
 					$l = !$l;
 					continue;
 				}
-				
+
 				$y += $x && !($x % 16);
 				$v = $x++ % 16 * 12;
 				$w = $y * 16 - 2;
-				
+
 				if ($l) {
 					imagefilledrectangle($image, $v - 2, $w - 14, $v + 9, $w + 1, $fg);
 					imagettftext($image, 15, 0, $v, $w, -$bg, '../lib/fonts/calc.ttf', $k);
@@ -65,10 +75,10 @@ if (preg_match('#^/homer/(.*)\.(gif|jpg|png)$#', $_SERVER['REQUEST_URI'], $match
 			}
 		}
 	}
-	
+
 	header('HTTP/1.0 200 OK');
 	header('Content-Disposition: inline; filename=homer.' . $match[2]);
-	
+
 	switch ($match[2]) {
 		case 'png':
 			header('Content-Type: image/png');
@@ -243,11 +253,11 @@ if (preg_match('#^/homer/(.*)\.(gif|jpg|png)$#', $_SERVER['REQUEST_URI'], $match
 foreach ($utf16 as $i => $ord)
 	echo '				z[0' . substr($ascii[$i], 1) . "] = $ord;
 ";
-?>				
+?>
 				$('div a').click(function() {
 					var e = $(this).index() + 1;
 					e = String.fromCharCode(z[e] ? z[e] : e);
-					
+
 					if (document.selection) {
 						s.focus();
 						var f = document.selection.createRange();
@@ -258,10 +268,10 @@ foreach ($utf16 as $i => $ord)
 						$(s).val($(s).val().slice(0, f) + e + $(s).val().slice(s.selectionEnd));
 						s.setSelectionRange(f + 1, f + 1);
 					}
-					
+
 					s.focus();
 				});
-				
+
 				$('form').submit(function(e) {
 					$('span').css({top: $(s).offset().top, left: $(s).offset().left, width: $(s).innerWidth(), height: $(s).innerHeight(), display: 'block'}).fadeOut();
 				});
@@ -295,7 +305,7 @@ for ($i = 1; $i < 0xf5; $i++) {
 		echo '<a></a>';
 		continue;
 	}
-	
+
 	echo '					<a', $i % 0x80 < 0x20 ? " style=\"background-image: url('%FF%FF/102/102/102/51/51/51/$i.png'); background-repeat: no-repeat; background-position: 0 4px;\"><img src=\"%FF%FF/153/153/51/51/51/51/$i.png\" alt=\"\" />" : '>' . htmlentities(utf8_encode(chr($i)), null, 'UTF-8'), '</a>
 ';
 }
