@@ -1,36 +1,33 @@
 <?
+namespace ClrHome;
+
 error_reporting(0);
-include('../lib/tools/Program.class.php');
+include(__DIR__ . '/../lib/tools/Program.class.php');
+include(__DIR__ . '/src/classes/HomerCode.class.php');
 
-function unhex($match) {
-	return pack('H2', substr($match[0], 2));
-}
-
-$ascii = array('\x11', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x09', '\x0b', '\x0c', '\x0e', '\x0f', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x1a', '\x1b', '\x1c', '\x1d', '\x1e', '\x1f');
-$utf8 = array("\xd7\x99\xd6\xbc", "\xd5\xbc", "\xe1\xb4\x9c", "\xe1\xb4\xa0", "\xe1\xb4\xa1", "\xe2\x96\xba", "\xe2\xac\x86", "\xe2\xac\x87", "\xe2\x88\xab", "\xe2\x85\xb9", "\xe2\x82\x8a", "\xe2\x88\x99", "\xe1\xb5\x8c", "\xea\x9c\xb0", "\xe2\x88\x9a", "\xef\xac\xb9", "\xe1\xb6\xbb", "\xe2\x88\xa0", "\xe2\x81\xb0", "\xca\xb3", "\xe1\xb5\x80", "\xe2\x89\xa4", "\xe2\x89\xa0", "\xe2\x89\xa5", "\xe2\x81\xbb", "\xe1\xb4\x87", "\xe2\x86\x92", "\xd1\x8e", "\xe2\x86\x91", "\xe2\x86\x93");
-$utf16 = array(0, 0x057c, 0x1d1c, 0x1d20, 0x1d21, 0x25ba, 0x2b06, 0x2b07, 0x222b, 0x2179, 0x208a, 0x2219, 0x1d4c, 0xa730, 0x221a, 0xfb39, 0x1dbb, 0x2220, 0x2070, 0x02b3, 0x1d40, 0x2264, 0x2260, 0x2265, 0x207b, 0x1d07, 0x2192, 0x044e, 0x2191, 0x2193);
-
-for ($i = 0; $i < 10; $i++) {
-	$ascii[] = "\\x8$i";
-	$utf8[] = "\xe2\x82" . chr(0x80 + $i);
-	$utf16[] = 0x2080 + $i;
-}
-
-if (isset($_GET['t'])) {
-	$_POST['q'] = $_GET['t'];
-}
+$homer_code = new HomerCode();
 
 if (is_uploaded_file($_FILES['file']['tmp_name'])) {
-	$variables = \ClrHome\Program::fromFile($_FILES['file']['tmp_name'], 1);
+	$variables = Program::fromFile($_FILES['file']['tmp_name'], 1);
 
 	if (count($variables) === 1 && (
-		$variables[0]->getType() === \ClrHome\VariableType::PROGRAM ||
-				$variables[0]->getType() === \ClrHome\VariableType::PROGRAM_LOCKED
+		$variables[0]->getType() === VariableType::PROGRAM ||
+				$variables[0]->getType() === VariableType::PROGRAM_LOCKED
 	)) {
-		$_SERVER['REQUEST_URI'] = '/homer/%' . implode('%', str_split(strtoupper(bin2hex(':' . str_replace("\xd6", "\xd6:", $variables[0]->getBodyAsTiChars()))), 2)) . '.gif';
+		$_SERVER['REQUEST_URI'] = '/homer/%' .
+				implode('%', str_split(strtoupper(bin2hex(':' . str_replace(
+			"\xd6",
+			"\xd6:",
+			$variables[0]->getBodyAsTiChars()
+		))), 2)) . '.gif';
 	}
-} elseif (isset($_POST['q'])) {
-	header('Location: ' . str_replace('%2F', '/', rawurlencode(preg_replace_callback("#\\\\x[\da-fA-F]{2}#", 'unhex', preg_replace('#\r\n?|\n#', "\xd6", utf8_decode(str_replace($utf8, $ascii, stripslashes($_POST['q'])))))) . '.gif'));
+} elseif (array_key_exists('q', $_POST)) {
+	header('Location: ' . str_replace(
+		'%2F',
+		'/',
+		rawurlencode($homer_code->encode($_POST['q'])) . '.gif'
+	));
+
 	die();
 }
 
@@ -250,9 +247,8 @@ if (preg_match('#^/homer/(.*)\.(gif|jpg|png)$#', $_SERVER['REQUEST_URI'], $match
 				s = $('textarea').get(0);
 				z = [];
 <?
-foreach ($utf16 as $i => $ord)
-	echo '				z[0' . substr($ascii[$i], 1) . "] = $ord;
-";
+foreach ($homer_code->getMap() as $unicode => $ti)
+	echo "				z[$ti] = $unicode;\n";
 ?>
 				$('div a').click(function() {
 					var e = $(this).index() + 1;
