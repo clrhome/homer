@@ -1,95 +1,188 @@
 <?
 namespace ClrHome;
 
-error_reporting(0);
+include(__DIR__ . '/../lib/tools/Picture.class.php');
 include(__DIR__ . '/../lib/tools/Program.class.php');
 include(__DIR__ . '/src/classes/HomerCode.class.php');
 
-$homer_code = new HomerCode();
+abstract class HomerFormat extends Enum {
+	const GIF = 'image/gif';
+	const JPEG = 'image/jpeg';
+	const PNG = 'image/png';
+}
 
-if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+define('ClrHome\HOMER_BG_COLOR', '9eab88');
+define('ClrHome\HOMER_FG_COLOR', '1a1c16');
+define('ClrHome\HOMER_FONT', '../bin/fonts/ti-calc.ttf');
+define('ClrHome\HOMER_INVERT', "\xff");
+define('ClrHome\HOMER_NEWLINE', "\xd6");
+
+define('ClrHome\HOMER_FORMATS', [
+	'gif' => HomerFormat::GIF,
+	'jpeg' => HomerFormat::JPEG,
+	'jpg' => HomerFormat::JPEG,
+	'png' => HomerFormat::PNG
+]);
+
+function make_image_color($image, $color) {
+	$color_rgb = array_map('hexdec', str_split($color, 2));
+
+	return imagecolorallocate(
+		$image,
+		$color_rgb[0],
+		$color_rgb[1],
+		$color_rgb[2]
+	);
+}
+
+$homer_code = new HomerCode();
+$output_extension = 'gif';
+$output_image = null;
+$output_text = null;
+
+if (is_uploaded_file(@$_FILES['file']['tmp_name'])) {
 	$variables = Program::fromFile($_FILES['file']['tmp_name'], 1);
 
-	if (count($variables) === 1 && (
+	if (count($variables) >= 1 && (
 		$variables[0]->getType() === VariableType::PROGRAM ||
 				$variables[0]->getType() === VariableType::PROGRAM_LOCKED
 	)) {
-		$_SERVER['REQUEST_URI'] = '/homer/%' .
-				implode('%', str_split(strtoupper(bin2hex(':' . str_replace(
-			"\xd6",
-			"\xd6:",
-			$variables[0]->getBodyAsTiChars()
-		))), 2)) . '.gif';
+		$output_text =
+				':' . str_replace("\xd6", "\xd6:", $variables[0]->getBodyAsTiChars());
 	}
-} elseif (array_key_exists('q', $_POST)) {
-	header('Location: ' . str_replace(
-		'%2F',
-		'/',
-		rawurlencode($homer_code->encode($_POST['q'])) . '.gif'
-	));
+} else if (array_key_exists('q', $_REQUEST)) {
+	if (
+		array_key_exists('bg_color', $_GET) && array_key_exists('fg_color', $_GET)
+	) {
+		$output_image = imagecreate(14, 18);
+		make_image_color($output_image, str_pad($_GET['bg_color'], 6, '0'));
 
-	die();
+		imagettftext(
+			$output_image,
+			18,
+			0,
+			0,
+			16,
+			make_image_color($output_image, str_pad($_GET['fg_color'], 6, '0')),
+			HOMER_FONT,
+			$_REQUEST['q']
+		);
+	} else {
+		header('Location: ' . str_replace(
+			'%2F',
+			'/',
+			rawurlencode($homer_code->encode($_REQUEST['q'])) . ".$output_extension"
+		));
+
+		die();
+	}
+} else if (
+	preg_match('/^\/homer\/(.*)\.(gif|jpe?g|png)$/',
+	$_SERVER['REQUEST_URI'],
+	$match
+)) {
+	$output_text = urldecode($match[1]);
+	$output_extension = $match[2];
 }
 
-if (preg_match('#^/homer/(.*)\.(gif|jpg|png)$#', $_SERVER['REQUEST_URI'], $match)) {
-	if (preg_match('#^%FF%FF((/\d+){7})$#', $match[1], $submatch)) {
-		$numbers = explode('/', $submatch[1]);
-		imagecolorallocate($image = imagecreate(14, 18), $numbers[4], $numbers[5], $numbers[6]);
-		imagettftext($image, 18, 0, 0, 16, imagecolorallocate($image, $numbers[1], $numbers[2], $numbers[3]), '../lib/fonts/calc.ttf', chr($numbers[7]));
-	} else {
-		$lines = explode("\xd6", urldecode($match[1]));
-		$height = count($lines);
+if ($output_text !== null) {
+	$lines = explode(HOMER_NEWLINE, $output_text);
 
-		foreach ($lines as $line)
-			$height += (int)((strlen(str_replace(chr(0xff), '', $line)) - 1) / 16);
+	$line_count = array_sum(array_map(function(string $line) {
+		return (int)((strlen(str_replace(HOMER_INVERT, '', $line)) - 1) / 16) + 1;
+	}, $lines));
 
-		$bg = imagecolorallocate($image = imagecreate(192, max($height * 16, 128)), 0x9e, 0xab, 0x88);
-		$fg = imagecolorallocate($image, 0x1a, 0x1c, 0x16);
-		$y = $l = 0;
+	$output_image = imagecreate(
+		PICTURE_COLUMN_COUNT * 2,
+		max($line_count * 8, PICTURE_ROW_COUNT) * 2
+	);
 
-		foreach ($lines as $line) {
-			$y++;
-			$x = 0;
+	$bg_color = make_image_color($output_image, HOMER_BG_COLOR);
+	$fg_color = make_image_color($output_image, HOMER_FG_COLOR);
+	$inverted = false;
+	$y = 14;
 
-			for ($j = 0; $j < strlen($line); $j++) {
-				$k = $line[$j];
+	foreach ($lines as $line) {
+		$x = 0;
 
-				if ($k == chr(0xff)) {
-					$l = !$l;
-					continue;
-				}
+		for (
+			$character_index = 0;
+			$character_index < strlen($line);
+			$character_index++
+		) {
+			if ($line[$character_index] === HOMER_INVERT) {
+				$inverted = !$inverted;
+				continue;
+			}
 
-				$y += $x && !($x % 16);
-				$v = $x++ % 16 * 12;
-				$w = $y * 16 - 2;
+			switch ($inverted) {
+				case false:
+					imagettftext(
+						$output_image,
+						15,
+						0,
+						$x, $y,
+						-$fg_color,
+						HOMER_FONT,
+						$line[$character_index]
+					);
 
-				if ($l) {
-					imagefilledrectangle($image, $v - 2, $w - 14, $v + 9, $w + 1, $fg);
-					imagettftext($image, 15, 0, $v, $w, -$bg, '../lib/fonts/calc.ttf', $k);
-				} else {
-					imagettftext($image, 15, 0, $v, $w, -$fg, '../lib/fonts/calc.ttf', $k);
-				}
+					break;
+				case true:
+					imagefilledrectangle(
+						$output_image,
+						$x - 2,
+						$y - 14,
+						$x + 9,
+						$y + 1,
+						$fg_color
+					);
+
+					imagettftext(
+						$output_image,
+						15,
+						0,
+						$x, $y,
+						-$bg_color,
+						HOMER_FONT,
+						$line[$character_index]
+					);
+
+					break;
+			}
+
+			$x += 12;
+
+			if ($x === PICTURE_COLUMN_COUNT * 2) {
+				$x = 0;
+				$y += 16;
 			}
 		}
+
+		$y += 16;
 	}
+}
 
+if ($output_image !== null) {
 	header('HTTP/1.0 200 OK');
-	header('Content-Disposition: inline; filename=homer.' . $match[2]);
+	header('Content-Disposition: inline; filename=homer.' . $output_extension);
 
-	switch ($match[2]) {
+	switch ($output_extension) {
 		case 'png':
 			header('Content-Type: image/png');
-			imagepng($image);
-			die();
+			imagepng($output_image);
+			break;
 		case 'jpg':
 			header('Content-Type: image/jpeg');
-			imagejpeg($image);
-			die();
+			imagejpeg($output_image);
+			break;
 		default:
 			header('Content-Type: image/gif');
-			imagegif($image);
-			die();
+			imagegif($output_image);
+			break;
 	}
+
+	die();
 }
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
