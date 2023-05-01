@@ -1,6 +1,9 @@
 <?php
 namespace ClrHome;
 
+define('ClrHome\HOMER_INVERT', "\xff");
+define('ClrHome\HOMER_NEWLINE', "\xd6");
+
 final class HomerCode {
   private array $unicodeToTi = [];
 
