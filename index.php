@@ -246,6 +246,7 @@ if ($output_image !== null) {
       fieldset {
         float: left;
         width: 550px;
+        margin: 0;
         -moz-border-radius: 24px;
         -webkit-border-radius: 24px;
         border-radius: 24px;
@@ -306,6 +307,7 @@ if ($output_image !== null) {
         cursor: pointer;
       }
       input[type=submit] {
+        position: absolute;
         border: 2px outset #66f;
         border-bottom-width: 3px;
         -moz-border-radius: 16px;
@@ -318,7 +320,7 @@ if ($output_image !== null) {
         background-color: #339;
         color: #fff;
         font-weight: bold;
-        font-size: 2em;
+        font-size: 1em;
         cursor: pointer;
       }
       input[type=submit]:active {
@@ -328,20 +330,26 @@ if ($output_image !== null) {
         -webkit-box-shadow: 0 0 4px #000;
         box-shadow: 0 0 4px #000;
       }
+      input[type=submit]:active + * textarea {
+        animation: flash 600ms;
+      }
+      @keyframes flash {
+        0% {
+          background-color: #fff;
+          color: #fff;
+        }
+        100% {
+          background-color: #9eab88;
+          color: #1a1c16;
+        }
+      }
     </style>
-    <script type="text/javascript" src="/lib/js/jquery.js"></script>
     <script src="/lib/js/ga.js"></script>
     <script src="homer.js?v=2023-04-30"></script>
-    <script type="text/javascript">// <![CDATA[
-      $(function() {
-        $('form').submit(function(e) {
-          $('span').css({top: $(s).offset().top, left: $(s).offset().left, width: $(s).innerWidth(), height: $(s).innerHeight(), display: 'block'}).fadeOut();
-        });
-      });
-    // ]]></script>
   </head>
   <body>
     <form enctype="multipart/form-data" method="post" action="./" accept-charset="UTF-8">
+      <input type="submit" accesskey="s" value="Screenshot!" />
       <fieldset>
         <h2>
           <a href="/">@ ClrHome</a>
@@ -360,9 +368,6 @@ batteries.
         <p>Or upload an 8XP for program source: <input type="file" name="file" /></p>
       </fieldset>
       <div></div>
-      <h1>
-        <input type="submit" accesskey="s" value="Screenshot!" />
-      </h1>
       <p>Copyright &copy; 2011 DEEP THOUGHT.<br />Layout of text in the textbox may not accurately reflect how it will look as an image.<br />Some special characters may not appear in the textbox but will appear in the image.</p>
     </form>
   </body>
