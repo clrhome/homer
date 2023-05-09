@@ -182,19 +182,19 @@ if ($output_image !== null) {
 
   die();
 }
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+?><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <title>Homer - ClrHome</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
       @font-face {
         font-family: calc;
-        src: url('/lib/fonts/calc.eot');
+        src: url('/bin/fonts/ti-calc.eot');
       }
       @font-face {
         font-family: calc;
-        src: url('/lib/fonts/calc.ttf');
+        src: url('/bin/fonts/ti-calc.ttf');
       }
       body {
         background-color: #666;
@@ -300,6 +300,8 @@ if ($output_image !== null) {
         overflow: auto;
       }
       div a {
+        background-repeat: no-repeat;
+        background-position: 0 4px;
         color: #993;
         cursor: pointer;
       }
@@ -327,35 +329,11 @@ if ($output_image !== null) {
         box-shadow: 0 0 4px #000;
       }
     </style>
-    <link rel="shortcut icon" href="/favicon.ico" />
     <script type="text/javascript" src="/lib/js/jquery.js"></script>
-    <script type="text/javascript" src="/lib/js/ga.js"></script>
+    <script src="/lib/js/ga.js"></script>
+    <script src="homer.js?v=2023-04-30"></script>
     <script type="text/javascript">// <![CDATA[
       $(function() {
-        s = $('textarea').get(0);
-        z = [];
-<?
-foreach ($homer_code->getMap() as $unicode => $ti)
-  echo "        z[$ti] = $unicode;\n";
-?>
-        $('div a').click(function() {
-          var e = $(this).index() + 1;
-          e = String.fromCharCode(z[e] ? z[e] : e);
-
-          if (document.selection) {
-            s.focus();
-            var f = document.selection.createRange();
-            f.text = e;
-            f.select();
-          } else {
-            var f = s.selectionStart;
-            $(s).val($(s).val().slice(0, f) + e + $(s).val().slice(s.selectionEnd));
-            s.setSelectionRange(f + 1, f + 1);
-          }
-
-          s.focus();
-        });
-
         $('form').submit(function(e) {
           $('span').css({top: $(s).offset().top, left: $(s).offset().left, width: $(s).innerWidth(), height: $(s).innerHeight(), display: 'block'}).fadeOut();
         });
@@ -381,20 +359,7 @@ batteries.
         <span></span>
         <p>Or upload an 8XP for program source: <input type="file" name="file" /></p>
       </fieldset>
-      <div>
-        <div>
-<?
-for ($i = 1; $i < 0xf5; $i++) {
-  if ($i == 0x0a or $i == 0x0d or $i == 0x7f) {
-    echo '<a></a>';
-    continue;
-  }
-
-  echo '          <a', $i % 0x80 < 0x20 ? " style=\"background-image: url('%FF%FF/102/102/102/51/51/51/$i.png'); background-repeat: no-repeat; background-position: 0 4px;\"><img src=\"%FF%FF/153/153/51/51/51/51/$i.png\" alt=\"\" />" : '>' . htmlentities(utf8_encode(chr($i)), null, 'UTF-8'), '</a>
-';
-}
-?>        </div>
-      </div>
+      <div></div>
       <h1>
         <input type="submit" accesskey="s" value="Screenshot!" />
       </h1>
