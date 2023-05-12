@@ -27,7 +27,7 @@ $cleverly = new \Cleverly();
 $cleverly->preserveIndent = true;
 $cleverly->setTemplateDir(__DIR__ . '/templates');
 
-$cleverly->display('homer.js.tpl', [
+$cleverly->display('homer.ts.tpl', [
   'characters' => $characters
 ]);
 ?>
