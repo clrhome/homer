@@ -187,7 +187,7 @@ if ($output_image !== null) {
   <head>
     <title>Homer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="https://clrhome.org/logo.css" type="text/css" rel="stylesheet" />
+    <link href="/logo.css" type="text/css" rel="stylesheet" />
     <link href="homer.css" type="text/css" rel="stylesheet" />
     <script src="/bin/js/ga.js"></script>
     <script src="homer.js?v=2023-04-30"></script>
@@ -212,9 +212,9 @@ batteries.
     </form>
     <blockquote>
       <h2 class="logo">
-        <a href="https://clrhome.org/resources/">
+        <a href="/resources/">
           <span>another resource by</span>
-          <img src="https://clrhome.org/images/emblem.png" alt="ClrHome" />
+          <img src="/images/emblem.png" alt="ClrHome" />
         </a>
       </h2>
       <cite>
