@@ -217,11 +217,11 @@ batteries.
           <img src="/images/emblem.png" alt="ClrHome" />
         </a>
       </h2>
-      <cite>
+      <div>
         <p>Made by <a href="https://fishbotwilleatyou.com/">Deep Toaster</a>. Have a suggestion? <a href="mailto:deeptoaster@gmail.com">Send me an email</a> or <a href="https://github.com/deeptoaster/opcode-table">open a pull request</a>!</p>
         <p>Layout of text in the textbox may not accurately depict the resulting image.</p>
         <p>Some special characters may not appear in the textbox but will appear in the image.</p>
-      </cite>
+      </div>
     </blockquote>
   </body>
 </html>

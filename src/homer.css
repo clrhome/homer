@@ -104,35 +104,44 @@ input[type="file"] {
   margin-left: 1em;
   font-size: 1em;
 }
-div a {
+form > div a {
   background-repeat: no-repeat;
   background-position: 0 4px;
-  color: #993;
+  color: #aa9e39;
   text-decoration: none;
   cursor: pointer;
 }
-div a:hover {
-  color: #666;
+form > div a:hover {
+  color: #5e5d57;
 }
-div a img {
+form > div a img {
   border: 0;
 }
-div a:hover img {
+form > div a:hover img {
   visibility: hidden;
 }
 blockquote,
 blockquote a {
-  color: #d3d2c6;
+  color: #5e5d57;
 }
 blockquote {
   clear: left;
   padding-top: 6em;
 }
+blockquote a {
+  color: #99988e;
+  text-decoration: none;
+}
+blockquote a:hover,
+blockquote a:focus {
+  text-decoration: underline;
+}
 .logo {
   float: right;
+  margin: 0;
   font-size: 0.8em;
 }
-cite {
+blockquote > div {
   display: block;
   font-size: 0.6em;
   font-style: normal;
