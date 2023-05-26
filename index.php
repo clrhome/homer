@@ -185,90 +185,92 @@ if ($output_image !== null) {
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
-    <title>Homer - ClrHome</title>
+    <title>Homer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="https://clrhome.org/logo.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
       @font-face {
-        font-family: calc;
+        font-family: ti-calc;
         src: url('/bin/fonts/ti-calc.eot');
       }
       @font-face {
-        font-family: calc;
+        font-family: ti-calc;
         src: url('/bin/fonts/ti-calc.ttf');
       }
-      body {
-        background-color: #666;
-        font-size: 24px;
-        color: #333;
-      }
       body, input {
-        font-family: 'Trebuchet MS', Helvetica, sans-serif;
+        font-family: sans-serif;
       }
-      fieldset h1 {
-        margin: 0 12px 12px 12px;
-        color: #333;
-        font: small-caps bold 1em 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-        text-align: left;
+      body {
+        background-color: #272722;
+        font-size: 24px;
       }
-      fieldset h2 {
-        float: right;
-        margin: 0 12px;
-        font-size: 1em;
-      }
-      fieldset p {
-        margin: 12px 12px 0 12px;
-        font-size: 0.5em;
-      }
-      a {
-        text-decoration: none;
-        color: #333;
-      }
-      a:hover {
-        color: #666;
-      }
-      a img {
-        border: 0;
-      }
-      a:hover img {
-        visibility: hidden;
+      form, blockquote{
+        width: 44em;
+        margin: 2em auto;
       }
       form {
-        min-width: 840px;
-        width: 80%;
-        height: 480px;
-        margin: 0 auto;
-        padding: 32px 24px;
-        -moz-border-radius: 32px;
-        -webkit-border-radius: 32px;
-        border-radius: 32px;
-        background-color: #333;
+        position: relative;
+      }
+      input[type=submit] {
+        display: block;
+        position: absolute;
+        top: 21em;
+        left: 50%;
+        width: 10em;
+        margin-left: -5.3em;
+        border: 0.1em outset #44897a;
+        border-radius: 0.5em;
+        box-shadow: 0 0 0.4em #000;
+        padding: 0.5em;
+        background-color: #256e5d;
+        color: #d3dad9;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+      }
+      input[type=submit]:active {
+        border-width: 0.05em;
+        border-color: #256e5d;
+        padding: 0.55em;
+        box-shadow: 0 0 0.2em #000;
+        background-color: #0e5243;
+        color: #a6c3bc;
+      }
+      input[type=submit]:active + * textarea {
+        animation: flash 600ms;
       }
       fieldset {
+        width: 21em;
         float: left;
-        width: 550px;
         margin: 0;
-        -moz-border-radius: 24px;
-        -webkit-border-radius: 24px;
-        border-radius: 24px;
-        padding: 24px 12px;
-        background-color: #ccc;
+        border-radius: 1em;
+        padding: 0 1em;
+        background-color: #d3d2c6;
+      }
+      h1 {
+        margin: 0.5em 0;
+        color: #272722;
+        font: small-caps bold 1em 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+      }
+      h1::before {
+        content: '\01f4f8\fe0e';
+        padding-right: 0.4em;
+        font-size: 1.2em;
+      }
+      textarea, form > div {
+        font-family: ti-calc, monospace;
       }
       textarea {
         display: block;
         margin: auto;
         border: 0;
-        -moz-border-radius: 8px;
-        -webkit-border-radius: 8px;
-        border-radius: 8px;
-        -moz-box-shadow: inset 0 0 8px #000;
-        -webkit-box-shadow: inset 0 0 8px #000;
-        box-shadow: inset 0 0 8px #000;
-        padding: 16px 32px;
+        border-radius: 0.2em;
+        box-shadow: inset 0 0 0.2em #000;
+        padding: 0.3em 0.6em;
         overflow: hidden;
         background-color: #9eab88;
         color: #1a1c16;
         font-size: 2em;
-        font-family: calc, 'Consolas Bold', 'Monaco Bold', 'Courier New Bold', monospace;
         line-height: 0.8;
         word-break: break-all;
         resize: none;
@@ -276,62 +278,51 @@ if ($output_image !== null) {
       textarea:focus {
         outline: 0;
       }
-      span {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-      }
-      h1 {
-        margin: 32px 0;
-        text-align: center;
-        font-size: 0.5em;
-        vertical-align: top;
-      }
-      form > p {
-        margin-left: 600px;
-        font-size: 0.5em;
-        color: #ccc;
+      fieldset p {
+        margin: 1em 0;
+        text-align: right;
+        font-size: 0.6em;
       }
       form > div {
-        margin-left: 600px;
-        font-family: calc, 'Lucida Console', Monaco, monospace;
+        float: left;
+        width: 18.5em;
+        margin-left: 2em;
       }
-      div div {
-        height: 280px;
-        overflow: auto;
+      input[type=file] {
+        margin-left: 1em;
+        font-size: 1em;
       }
       div a {
         background-repeat: no-repeat;
         background-position: 0 4px;
         color: #993;
+        text-decoration: none;
         cursor: pointer;
       }
-      input[type=submit] {
-        position: absolute;
-        border: 2px outset #66f;
-        border-bottom-width: 3px;
-        -moz-border-radius: 16px;
-        -webkit-border-radius: 16px;
-        border-radius: 16px;
-        -moz-box-shadow: 0 0 8px #000;
-        -webkit-box-shadow: 0 0 8px #000;
-        box-shadow: 0 0 8px #000;
-        padding: 8px 24px 6px 24px;
-        background-color: #339;
-        color: #fff;
-        font-weight: bold;
-        font-size: 1em;
-        cursor: pointer;
+      div a:hover {
+        color: #666;
       }
-      input[type=submit]:active {
-        border-width: 1px;
-        padding: 9px 25px 8px 25px;
-        -moz-box-shadow: 0 0 4px #000;
-        -webkit-box-shadow: 0 0 4px #000;
-        box-shadow: 0 0 4px #000;
+      div a img {
+        border: 0;
       }
-      input[type=submit]:active + * textarea {
-        animation: flash 600ms;
+      div a:hover img {
+        visibility: hidden;
+      }
+      blockquote, blockquote a {
+        color: #d3d2c6;
+      }
+      blockquote {
+        clear: left;
+        padding-top: 6em;
+      }
+      .logo {
+        float: right;
+        font-size: 0.8em;
+      }
+      cite {
+        display: block;
+        font-size: 0.6em;
+        font-style: normal;
       }
       @keyframes flash {
         0% {
@@ -349,12 +340,9 @@ if ($output_image !== null) {
   </head>
   <body>
     <form enctype="multipart/form-data" method="post" action="./" accept-charset="UTF-8">
-      <input type="submit" accesskey="s" value="Screenshot!" />
+      <input type="submit" value="Screenshot!" />
       <fieldset>
-        <h2>
-          <a href="/">@ ClrHome</a>
-        </h2>
-        <h1><img src="icon.gif" alt="" /> Homescreen Image Maker</h1>
+        <h1>Homescreen Image Maker</h1>
         <textarea rows="8" cols="16" name="q">
 
 Your batteries
@@ -364,11 +352,22 @@ Recommend
 change of
 batteries.
 </textarea>
-        <span></span>
         <p>Or upload an 8XP for program source: <input type="file" name="file" /></p>
       </fieldset>
       <div></div>
-      <p>Copyright &copy; 2011 DEEP THOUGHT.<br />Layout of text in the textbox may not accurately reflect how it will look as an image.<br />Some special characters may not appear in the textbox but will appear in the image.</p>
     </form>
+    <blockquote>
+      <h2 class="logo">
+        <a href="https://clrhome.org/resources/">
+          <span>another resource by</span>
+          <img src="https://clrhome.org/images/emblem.png" alt="ClrHome" />
+        </a>
+      </h2>
+      <cite>
+        <p>Made by <a href="https://fishbotwilleatyou.com/">Deep Toaster</a>. Have a suggestion? <a href="mailto:deeptoaster@gmail.com">Send me an email</a> or <a href="https://github.com/deeptoaster/opcode-table">open a pull request</a>!</p>
+        <p>Layout of text in the textbox may not accurately depict the resulting image.</p>
+        <p>Some special characters may not appear in the textbox but will appear in the image.</p>
+      </cite>
+    </blockquote>
   </body>
 </html>

@@ -10,7 +10,7 @@ for ($ti = 1; $ti < 0xf5; $ti++) {
   if ($ti !== 0x0a && $ti !== 0x0d && $ti !== 0x7f) {
     $characters[$ti] = ['ti' => $ti, 'unicode' => $ti];
 
-    if ($ti % 0x80 < 0x20) {
+    if ($ti % 0x80 < 0x20 || $ti === 0xad) {
       $characters[$ti]['encoded'] =
           str_pad(strtoupper(dechex($ti)), 2, '0', STR_PAD_LEFT);
     }

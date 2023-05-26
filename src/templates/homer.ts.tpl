@@ -40,9 +40,9 @@ function initializeCharacterMenu(): void {
     if ("encoded" in character) {
       const characterImage = document.createElement("img");
 
-      characterImage.src = `?bg_color=333333&fg_color=999933&q=%${ldelim}character.encoded{rdelim}`;
+      characterImage.src = `?bg_color=272722&fg_color=999933&q=%${ldelim}character.encoded{rdelim}`;
       characterButton.appendChild(characterImage);
-      characterButton.style.backgroundImage = `url('?bg_color=333333&fg_color=666666&q=%${ldelim}character.encoded{rdelim}')`;
+      characterButton.style.backgroundImage = `url('?bg_color=272722&fg_color=666666&q=%${ldelim}character.encoded{rdelim}')`;
     } else {
       characterButton.appendChild(document.createTextNode(characterTi));
     }
