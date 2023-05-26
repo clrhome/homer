@@ -2,7 +2,7 @@
 namespace ClrHome;
 
 include(__DIR__ . '/classes/HomerCode.class.php');
-include(__DIR__ . '/../lib/cleverly/Cleverly.class.php');
+include(__DIR__ . '/../../lib/cleverly/Cleverly.class.php');
 
 $characters = [];
 

@@ -1,0 +1,149 @@
+@font-face {
+  font-family: ti-calc;
+  src: url("/bin/fonts/ti-calc.eot");
+}
+@font-face {
+  font-family: ti-calc;
+  src: url("/bin/fonts/ti-calc.ttf");
+}
+body,
+input {
+  font-family: sans-serif;
+}
+body {
+  background-color: #272722;
+  font-size: 24px;
+}
+form,
+blockquote {
+  width: 44em;
+  margin: 2em auto;
+}
+form {
+  position: relative;
+}
+input[type="submit"] {
+  display: block;
+  position: absolute;
+  top: 21em;
+  left: 50%;
+  width: 10em;
+  margin-left: -5.3em;
+  border: 0.1em outset #44897a;
+  border-radius: 0.5em;
+  box-shadow: 0 0 0.4em #000;
+  padding: 0.5em;
+  background-color: #256e5d;
+  color: #d3dad9;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+}
+input[type="submit"]:active {
+  border-width: 0.05em;
+  border-color: #256e5d;
+  padding: 0.55em;
+  box-shadow: 0 0 0.2em #000;
+  background-color: #0e5243;
+  color: #a6c3bc;
+}
+input[type="submit"]:active + * textarea {
+  animation: flash 600ms;
+}
+fieldset {
+  width: 21em;
+  float: left;
+  margin: 0;
+  border-radius: 1em;
+  padding: 0 1em;
+  background-color: #d3d2c6;
+}
+h1 {
+  margin: 0.5em 0;
+  color: #272722;
+  font: small-caps bold 1em "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+h1::before {
+  content: "\01f4f8\fe0e";
+  padding-right: 0.4em;
+  font-size: 1.2em;
+}
+textarea,
+form > div {
+  font-family: ti-calc, monospace;
+}
+textarea {
+  display: block;
+  margin: auto;
+  border: 0;
+  border-radius: 0.2em;
+  box-shadow: inset 0 0 0.2em #000;
+  padding: 0.3em 0.6em;
+  overflow: hidden;
+  background-color: #9eab88;
+  color: #1a1c16;
+  font-size: 2em;
+  line-height: 0.8;
+  word-break: break-all;
+  resize: none;
+}
+textarea:focus {
+  outline: 0;
+}
+fieldset p {
+  margin: 1em 0;
+  text-align: right;
+  font-size: 0.6em;
+}
+form > div {
+  float: left;
+  width: 18.5em;
+  margin-left: 2em;
+}
+input[type="file"] {
+  margin-left: 1em;
+  font-size: 1em;
+}
+div a {
+  background-repeat: no-repeat;
+  background-position: 0 4px;
+  color: #993;
+  text-decoration: none;
+  cursor: pointer;
+}
+div a:hover {
+  color: #666;
+}
+div a img {
+  border: 0;
+}
+div a:hover img {
+  visibility: hidden;
+}
+blockquote,
+blockquote a {
+  color: #d3d2c6;
+}
+blockquote {
+  clear: left;
+  padding-top: 6em;
+}
+.logo {
+  float: right;
+  font-size: 0.8em;
+}
+cite {
+  display: block;
+  font-size: 0.6em;
+  font-style: normal;
+}
+@keyframes flash {
+  0% {
+    background-color: #fff;
+    color: #fff;
+  }
+  100% {
+    background-color: #9eab88;
+    color: #1a1c16;
+  }
+}

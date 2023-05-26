@@ -1,0 +1,9 @@
+.browserslistrc
+.git-ftp-ignore
+.git-ftp-include
+.gitignore
+Makefile
+lib/*
+src/homer.css
+src/homer.ts.php
+src/templates/*

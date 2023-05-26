@@ -1,0 +1,4 @@
+homer.css:src/homer.css
+homer.js:src/classes/HomerCode.class.php
+homer.js:src/homer.ts.php
+homer.js:src/templates/homer.ts.tpl
