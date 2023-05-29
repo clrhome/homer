@@ -210,7 +210,7 @@ batteries.
       </fieldset>
       <div></div>
     </form>
-    <blockquote>
+    <footer>
       <h2 class="logo">
         <a href="/resources/">
           <span>another resource by</span>
@@ -222,6 +222,6 @@ batteries.
         <p>Layout of text in the textbox may not accurately depict the resulting image.</p>
         <p>Some special characters may not appear in the textbox but will appear in the image.</p>
       </div>
-    </blockquote>
+    </footer>
   </body>
 </html>

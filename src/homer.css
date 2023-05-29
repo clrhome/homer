@@ -15,7 +15,7 @@ body {
   font-size: 24px;
 }
 form,
-blockquote {
+footer {
   width: 44em;
   margin: 2em auto;
 }
@@ -120,20 +120,20 @@ form > div a img {
 form > div a:hover img {
   visibility: hidden;
 }
-blockquote,
-blockquote a {
+footer,
+footer a {
   color: #5e5d57;
 }
-blockquote {
+footer {
   clear: left;
   padding-top: 6em;
 }
-blockquote a {
+footer a {
   color: #99988e;
   text-decoration: none;
 }
-blockquote a:hover,
-blockquote a:focus {
+footer a:hover,
+footer a:focus {
   text-decoration: underline;
 }
 .logo {
@@ -141,7 +141,7 @@ blockquote a:focus {
   margin: 0;
   font-size: 0.8em;
 }
-blockquote > div {
+footer > div {
   display: block;
   font-size: 0.6em;
   font-style: normal;
