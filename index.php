@@ -189,8 +189,9 @@ if ($output_image !== null) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="/logo.css" type="text/css" rel="stylesheet" />
     <link href="homer.css" type="text/css" rel="stylesheet" />
-    <script src="/bin/js/ga.js"></script>
-    <script src="homer.js?v=2023-04-30"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JGMW6RW2WE"></script>
+    <script src="/bin/js/ga.js?v=2023-09-06"></script>
+    <script src="homer.js?v=2023-09-06"></script>
   </head>
   <body>
     <form enctype="multipart/form-data" method="post" action="./" accept-charset="UTF-8">
