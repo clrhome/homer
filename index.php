@@ -1,8 +1,8 @@
 <?
 namespace ClrHome;
 
-include(__DIR__ . '/../lib/tools/Picture.class.php');
-include(__DIR__ . '/../lib/tools/Program.class.php');
+include(__DIR__ . '/lib/tools/Picture.class.php');
+include(__DIR__ . '/lib/tools/Program.class.php');
 include(__DIR__ . '/src/classes/HomerCode.class.php');
 
 abstract class HomerFormat extends Enum {
@@ -13,7 +13,7 @@ abstract class HomerFormat extends Enum {
 
 define('ClrHome\HOMER_BG_COLOR', '9eab88');
 define('ClrHome\HOMER_FG_COLOR', '1a1c16');
-define('ClrHome\HOMER_FONT', '../bin/fonts/ti-calc.ttf');
+define('ClrHome\HOMER_FONT', 'bin/fonts/ti-calc.ttf');
 
 define('ClrHome\HOMER_FORMATS', [
   'gif' => HomerFormat::GIF,
@@ -187,7 +187,7 @@ if ($output_image !== null) {
   <head>
     <title>Homer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="/logo.css" type="text/css" rel="stylesheet" />
+    <link href="https://clrhome.org/logo.css" type="text/css" rel="stylesheet" />
     <link href="homer.css" type="text/css" rel="stylesheet" />
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JGMW6RW2WE"></script>
     <script src="/bin/js/ga.js?v=2023-09-06"></script>
@@ -213,13 +213,13 @@ batteries.
     </form>
     <footer>
       <h2 class="logo">
-        <a href="/resources/">
+        <a href="https://clrhome.org/resources/">
           <span>another resource by</span>
-          <img src="/images/emblem.png" alt="ClrHome" />
+          <img src="https://clrhome.org/images/emblem.png" alt="ClrHome" />
         </a>
       </h2>
       <div>
-        <p>Made by <a href="https://fishbotwilleatyou.com/">Deep Toaster</a>. Have a suggestion? <a href="mailto:deeptoaster@gmail.com">Send me an email</a> or <a href="https://github.com/deeptoaster/opcode-table">open a pull request</a>!</p>
+        <p>Made by <a href="https://fishbotwilleatyou.com/">Deep Toaster</a>. Have a suggestion? <a href="mailto:deeptoaster@gmail.com">Send me an email</a> or <a href="https://github.com/deeptoaster/homer">open a pull request</a>!</p>
         <p>Layout of text in the textbox may not accurately depict the resulting image.</p>
         <p>Some special characters may not appear in the textbox but will appear in the image.</p>
       </div>

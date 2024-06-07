@@ -1,10 +1,10 @@
 @font-face {
   font-family: ti-calc;
-  src: url("/bin/fonts/ti-calc.eot");
+  src: url("bin/fonts/ti-calc.eot");
 }
 @font-face {
   font-family: ti-calc;
-  src: url("/bin/fonts/ti-calc.ttf");
+  src: url("bin/fonts/ti-calc.ttf");
 }
 body,
 input {
@@ -61,7 +61,11 @@ fieldset {
 h1 {
   margin: 0.5em 0;
   color: #272722;
-  font: small-caps bold 1em "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font:
+    small-caps bold 1em "Palatino Linotype",
+    "Book Antiqua",
+    Palatino,
+    serif;
 }
 h1::before {
   content: "\01f4f8\fe0e";
